@@ -1,0 +1,26 @@
+--- mpdremote.bak/mpd-class/mpd.class.php	2004-05-04 22:42:52.000000000 +0200
++++ mpdremote/mpd-class/mpd.class.php	2005-11-19 20:25:21.000000000 +0100
+@@ -779,13 +779,21 @@ class mpd {
+ 			$plistArray = array();
+ 			$plistLine = strtok($resp,"\n");
+ 			$plistFile = "";
+-			$plCounter = -1;
++			$plCounter = $PLCounter = $dirCounter = -1;
+ 			while ( $plistLine ) {
+ 				list ( $element, $value ) = split(": ",$plistLine);
+ 				if ( $element == "file" ) {
+ 					$plCounter++;
+ 					$plistFile = $value;
+-					$plistArray[$plCounter]["file"] = $plistFile;
++					$plistArray[$plCounter][$element] = $plistFile;
++				} elseif ( $element == "playlist" ) {
++					$PLCounter++;
++					$plistFile = $value;
++					$plistArray[$element][$PLCounter] = $plistFile;
++				} elseif ( $element == "directory" ) {
++					$dirCounter++;
++					$plistFile = $value;
++					$plistArray[$element][$dirCounter] = $plistFile;
+ 				} else {
+ 					$plistArray[$plCounter][$element] = $value;
+ 				}
